@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_infinite_list/posts/posts.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
-
 class PostsList extends StatefulWidget {
   const PostsList({super.key});
 
@@ -26,23 +25,58 @@ class _PostsListState extends State<PostsList> {
       builder: (context, state) {
         switch (state.status) {
           case PostStatus.failure:
-            return const Center(child: Text('failed to fetch posts'));
+            return const Center(child: Text('failed to fetch countries'));
           case PostStatus.success:
             if (state.posts.isEmpty) {
-              return const Center(child: Text('no posts'));
+              return const Center(child: Text('no countries to show'));
             }
-            return ListView.builder(
-              itemBuilder: (BuildContext context, int index) {
-                return PostListItem(post: state.posts[index]);
-              },
-              itemCount: state.posts.length,
-                  
-              controller: _scrollController,
+            return SizedBox(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  const Text('Searchable list with divider'),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: renderSimpleSearchableList(state),
+                    ),
+                  ),
+                ],
+              ),
             );
+
           case PostStatus.initial:
             return const Center(child: CircularProgressIndicator());
         }
       },
+    );
+  }
+
+  renderSimpleSearchableList(PostState state) {
+    return SearchableList<Country>(
+      initialList: state.posts,
+      builder: (list, index, item) {
+        final Country country = item;
+
+        return PostListItem(post: country);
+      },
+      filter: (value) => state.posts
+          .where(
+            (element) => element.name.toLowerCase().contains(value),
+          )
+          .toList(),
+      emptyWidget: Container(),
+      inputDecoration: InputDecoration(
+        labelText: "Search Country",
+        fillColor: Colors.white,
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Colors.blue,
+            width: 1.0,
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
     );
   }
 

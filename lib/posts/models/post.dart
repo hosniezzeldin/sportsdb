@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 final class Country extends Equatable {
-  const Country({ required this.name});
+  const Country( { required this.name});
 
   final String name;
 
