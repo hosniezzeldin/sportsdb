@@ -7,7 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:http/http.dart' as http;
 import 'package:stream_transform/stream_transform.dart';
 
-import '../../models/Season.dart';
+import '../../models/Team.dart';
 
 part 'team_event.dart';
 part 'team_state.dart';
@@ -22,14 +22,14 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 }
 
 class TeamBloc extends Bloc<SeasonEvent, TeamState> {
-  TeamBloc({required this.httpClient, required this.league_id})
+  TeamBloc({required this.httpClient, required this.country_name})
       : super(const TeamState()) {
     on<TeamsFetched>(
       _onLeagueFetched,
       transformer: throttleDroppable(throttleDuration),
     );
   }
-  final String league_id;
+  final String country_name;
   final http.Client httpClient;
 
   Future<void> _onLeagueFetched(
@@ -37,22 +37,22 @@ class TeamBloc extends Bloc<SeasonEvent, TeamState> {
     if (state.hasReachedMax) return;
     try {
       if (state.status == TeamStatus.initial) {
-        final posts = await _fetchPosts(league_id);
+        final posts = await _fetchPosts(country_name);
         return emit(
           state.copyWith(
             status: TeamStatus.success,
-            seasons: posts,
+            teams: posts,
             hasReachedMax: false,
           ),
         );
       }
-      final posts = await _fetchPosts(league_id);
+      final posts = await _fetchPosts(country_name);
       posts.isEmpty
           ? emit(state.copyWith(hasReachedMax: true))
           : emit(
               state.copyWith(
                 status: TeamStatus.success,
-                seasons: List.of(state.seasons)..addAll(posts),
+                teams: List.of(state.teams)..addAll(posts),
                 hasReachedMax: false,
               ),
             );
@@ -61,29 +61,27 @@ class TeamBloc extends Bloc<SeasonEvent, TeamState> {
     }
   }
 
-  Future<List<Season>> _fetchPosts(String league_id) async {
-    List<Season> seasons = [];
+  Future<List<Team>> _fetchPosts(String country_name) async {
+    List<Team> teams = [];
 
     final response = await httpClient.get(
       Uri.http(
         'www.thesportsdb.com',
-        '/api/v1/json/3/search_all_seasons.php',
-        <String, String>{'id': league_id},
+        '/api/v1/json/3/search_all_teams.php',
+        <String, String>{'s': 'soccer', 'c': country_name},
       ),
     );
     if (response.statusCode == 200) {
       final body = json.decode(response.body) as Map<String, dynamic>;
-      List<dynamic> seasonList = body['seasons'];
+      List<dynamic> teamList = body['teams'];
 
-      for (var season in seasonList) {
-        seasons.add(Season.fromMap(season));
+      for (var team in teamList) {
+        teams.add(Team.fromMap(team));
       }
       ;
-      // leagueList.forEach((element) {
-      //   leagues.add(Season.fromMap(element));
-      // });
-      seasons.sort((a, b) => a.name.compareTo(b.name));
-      return seasons;
+
+      teams.sort((a, b) => a.name.compareTo(b.name));
+      return teams;
     }
 
     throw Exception('error fetching posts');

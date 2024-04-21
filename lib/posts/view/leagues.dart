@@ -11,8 +11,8 @@ import '../models/league.dart';
 import 'seasons.dart';
 
 class Leagues extends StatefulWidget {
-  const Leagues({super.key});
-
+  const Leagues({super.key, required this.country_name});
+  final String country_name;
   @override
   State<Leagues> createState() => _LeaguesState();
 }
@@ -73,10 +73,11 @@ class _LeaguesState extends State<Leagues> {
           onTap: () =>
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return BlocProvider<SeasonBloc>(
-              create: (context) =>
-                  SeasonBloc(httpClient: http.Client(), league_id: league.id)
-                    ..add(SeasonFetched()),
-              child: Seasons(),
+              create: (context) => SeasonBloc(
+                httpClient: http.Client(),
+                league_id: league.id,
+              )..add(SeasonFetched()),
+              child: Seasons(country_name: widget.country_name),
             );
           })),
           child: LeagueListItem(post: league),

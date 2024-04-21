@@ -71,7 +71,7 @@ class _PostsListState extends State<PostsList> {
               create: (context) => LeagueBloc(
                   httpClient: http.Client(), country_name: country.name)
                 ..add(LeagueFetched()),
-              child: Leagues(),
+              child: Leagues(country_name: country.name),
             );
           })),
           child: PostListItem(post: country),

@@ -5,31 +5,31 @@ enum TeamStatus { initial, success, failure }
 final class TeamState extends Equatable {
   const TeamState({
     this.status = TeamStatus.initial,
-    this.seasons = const <Season>[],
+    this.teams = const <Team>[],
     this.hasReachedMax = false,
   });
 
   final TeamStatus status;
-  final List<Season> seasons;
+  final List<Team> teams;
   final bool hasReachedMax;
 
   TeamState copyWith({
     TeamStatus? status,
-    List<Season>? seasons,
+    List<Team>? teams,
     bool? hasReachedMax,
   }) {
     return TeamState(
       status: status ?? this.status,
-      seasons: seasons ?? this.seasons,
+      teams: teams ?? this.teams,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
     );
   }
 
   @override
   String toString() {
-    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, posts: ${seasons.length} }''';
+    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, posts: ${teams.length} }''';
   }
 
   @override
-  List<Object> get props => [status, seasons, hasReachedMax];
+  List<Object> get props => [status, teams, hasReachedMax];
 }

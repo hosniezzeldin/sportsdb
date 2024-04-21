@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_infinite_list/posts/bloc/Teams/team_bloc.dart';
 import 'package:flutter_infinite_list/posts/posts.dart';
-import 'package:flutter_infinite_list/posts/widgets/season_list_item.dart';
+import 'package:flutter_infinite_list/posts/widgets/team_list_item.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
-import '../bloc/Seasons/seasons_bloc.dart';
-import '../models/Season.dart';
+import '../models/Team.dart';
 
 class Teams extends StatefulWidget {
   const Teams({super.key});
@@ -25,13 +25,13 @@ class _TeamsState extends State<Teams> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SeasonBloc, SeasonState>(
+    return BlocBuilder<TeamBloc, TeamState>(
       builder: (context, state) {
         switch (state.status) {
-          case SeasonStatus.failure:
+          case TeamStatus.failure:
             return const Center(child: Text('failed to fetch countries'));
-          case SeasonStatus.success:
-            if (state.seasons.isEmpty) {
+          case TeamStatus.success:
+            if (state.teams.isEmpty) {
               return const Center(child: Text('no countries to show'));
             }
             return Scaffold(
@@ -53,22 +53,22 @@ class _TeamsState extends State<Teams> {
               ),
             );
 
-          case SeasonStatus.initial:
+          case TeamStatus.initial:
             return const Center(child: CircularProgressIndicator());
         }
       },
     );
   }
 
-  renderSimpleSearchableList(SeasonState state) {
-    return SearchableList<Season>(
-      initialList: state.seasons,
+  renderSimpleSearchableList(TeamState state) {
+    return SearchableList<Team>(
+      initialList: state.teams,
       builder: (list, index, item) {
-        final Season country = item;
+        final Team country = item;
 
-        return SeasonListItem(post: country);
+        return TeamListItem(post: country);
       },
-      filter: (value) => state.seasons
+      filter: (value) => state.teams
           .where(
             (element) => element.name.toLowerCase().contains(value),
           )
