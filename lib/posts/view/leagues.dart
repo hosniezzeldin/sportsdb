@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_infinite_list/posts/bloc/Leagues/leagues_bloc.dart';
 import 'package:flutter_infinite_list/posts/posts.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_infinite_list/posts/widgets/league_list_item.dart';
 import 'package:searchable_listview/searchable_listview.dart';
 
-import 'leagues.dart';
+import '../models/league.dart';
 
-class PostsList extends StatefulWidget {
-  const PostsList({super.key});
+class Leagues extends StatefulWidget {
+  const Leagues({super.key});
 
   @override
-  State<PostsList> createState() => _PostsListState();
+  State<Leagues> createState() => _LeaguesState();
 }
 
-class _PostsListState extends State<PostsList> {
+class _LeaguesState extends State<Leagues> {
   final _scrollController = ScrollController();
 
   @override
@@ -25,59 +25,50 @@ class _PostsListState extends State<PostsList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CountryBloc, CountryState>(
+    return BlocBuilder<LeagueBloc, LeagueState>(
       builder: (context, state) {
         switch (state.status) {
-          case PostStatus.failure:
+          case LeagueStatus.failure:
             return const Center(child: Text('failed to fetch countries'));
-          case PostStatus.success:
-            if (state.posts.isEmpty) {
+          case LeagueStatus.success:
+            if (state.leagues.isEmpty) {
               return const Center(child: Text('no countries to show'));
             }
-            return Container(
-              margin: EdgeInsets.only(top: 15.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: renderSimpleSearchableList(state),
+            return Scaffold(
+              body: Container(
+                margin: EdgeInsets.only(top: 15.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: renderSimpleSearchableList(state),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );
 
-          case PostStatus.initial:
+          case LeagueStatus.initial:
             return const Center(child: CircularProgressIndicator());
         }
       },
     );
   }
 
-  renderSimpleSearchableList(CountryState state) {
-    return SearchableList<Country>(
-      initialList: state.posts,
+  renderSimpleSearchableList(LeagueState state) {
+    return SearchableList<League>(
+      initialList: state.leagues,
       builder: (list, index, item) {
-        final Country country = item;
+        final League country = item;
 
-        return GestureDetector(
-          onTap: () =>
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return BlocProvider<LeagueBloc>(
-              create: (context) => LeagueBloc(
-                  httpClient: http.Client(), country_name: country.name)
-                ..add(LeagueFetched()),
-              child: Leagues(),
-            );
-          })),
-          child: PostListItem(post: country),
-        );
+        return LeagueListItem(post: country);
       },
-      filter: (value) => state.posts
+      filter: (value) => state.leagues
           .where(
             (element) => element.name.toLowerCase().contains(value),
           )

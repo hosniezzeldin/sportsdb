@@ -1,9 +1,9 @@
-part of 'post_bloc.dart';
+part of 'country_bloc.dart';
 
 enum PostStatus { initial, success, failure }
 
-final class PostState extends Equatable {
-  const PostState({
+final class CountryState extends Equatable {
+  const CountryState({
     this.status = PostStatus.initial,
     this.posts = const <Country>[],
     this.hasReachedMax = false,
@@ -13,12 +13,12 @@ final class PostState extends Equatable {
   final List<Country> posts;
   final bool hasReachedMax;
 
-  PostState copyWith({
+  CountryState copyWith({
     PostStatus? status,
     List<Country>? posts,
     bool? hasReachedMax,
   }) {
-    return PostState(
+    return CountryState(
       status: status ?? this.status,
       posts: posts ?? this.posts,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,

@@ -4,12 +4,13 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_infinite_list/posts/posts.dart';
 import 'package:http/http.dart' as http;
 import 'package:stream_transform/stream_transform.dart';
 
-part 'post_event.dart';
-part 'post_state.dart';
+import '../../models/league.dart';
+
+part 'leagues_event.dart';
+part 'leagues_state.dart';
 
 const _postLimit = 20;
 const throttleDuration = Duration(milliseconds: 100);
@@ -20,65 +21,67 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
   };
 }
 
-class PostBloc extends Bloc<PostEvent, PostState> {
-  PostBloc({required this.httpClient}) : super(const PostState()) {
-    on<PostFetched>(
-      _onPostFetched,
+class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
+  LeagueBloc({required this.httpClient, required this.country_name})
+      : super(const LeagueState()) {
+    on<LeagueFetched>(
+      _onLeagueFetched,
       transformer: throttleDroppable(throttleDuration),
     );
   }
-
+  final String country_name;
   final http.Client httpClient;
 
-  Future<void> _onPostFetched(
-    PostFetched event,
-    Emitter<PostState> emit,
-  ) async {
+  Future<void> _onLeagueFetched(
+      LeagueFetched event, Emitter<LeagueState> emit) async {
     if (state.hasReachedMax) return;
     try {
-      if (state.status == PostStatus.initial) {
-        final posts = await _fetchPosts();
+      if (state.status == LeagueStatus.initial) {
+        final posts = await _fetchPosts(country_name);
         return emit(
           state.copyWith(
-            status: PostStatus.success,
-            posts: posts,
+            status: LeagueStatus.success,
+            leagues: posts,
             hasReachedMax: false,
           ),
         );
       }
-      final posts = await _fetchPosts();
+      final posts = await _fetchPosts(country_name);
       posts.isEmpty
           ? emit(state.copyWith(hasReachedMax: true))
           : emit(
               state.copyWith(
-                status: PostStatus.success,
-                posts: List.of(state.posts)..addAll(posts),
+                status: LeagueStatus.success,
+                leagues: List.of(state.leagues)..addAll(posts),
                 hasReachedMax: false,
               ),
             );
     } catch (_) {
-      emit(state.copyWith(status: PostStatus.failure));
+      emit(state.copyWith(status: LeagueStatus.failure));
     }
   }
 
-  Future<List<Country>> _fetchPosts() async {
-    List<Country> countries = [];
+  Future<List<League>> _fetchPosts(String country_name) async {
+    List<League> leagues = [];
 
     final response = await httpClient.get(
       Uri.http(
         'www.thesportsdb.com',
-        '/api/v1/json/3/all_countries.php',
+        '/api/v1/json/3/search_all_leagues.php',
+        <String, String>{'c': country_name},
       ),
     );
     if (response.statusCode == 200) {
       final body = json.decode(response.body) as Map<String, dynamic>;
-      final countriesList = body['countries'] as List;
-      countriesList.forEach((countryName) {
-        countries.add(Country.fromMap(countryName));
+      List<dynamic> leagueList = body['countries'];
+
+      leagueList.forEach((element) {
+        leagues.add(League.fromMap(element));
       });
-      countries.sort(( a,  b) => a.name.compareTo(b.name));
-      return countries;
+      leagues.sort((a, b) => a.name.compareTo(b.name));
+      return leagues;
     }
+
     throw Exception('error fetching posts');
   }
 }
