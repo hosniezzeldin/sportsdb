@@ -46,7 +46,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           ),
         );
       }
-      final posts = await _fetchPosts(state.posts.length);
+      final posts = await _fetchPosts();
       posts.isEmpty
           ? emit(state.copyWith(hasReachedMax: true))
           : emit(
@@ -61,24 +61,23 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     }
   }
 
-  Future<List<Post>> _fetchPosts([int startIndex = 0]) async {
+  Future<List<Country>> _fetchPosts() async {
+    List<Country> countries = [];
+
     final response = await httpClient.get(
-      Uri.https(
-        'jsonplaceholder.typicode.com',
-        '/posts',
-        <String, String>{'_start': '$startIndex', '_limit': '$_postLimit'},
+      Uri.http(
+        'www.thesportsdb.com',
+        '/api/v1/json/3/all_countries.php',
       ),
     );
     if (response.statusCode == 200) {
-      final body = json.decode(response.body) as List;
-      return body.map((dynamic json) {
-        final map = json as Map<String, dynamic>;
-        return Post(
-          id: map['id'] as int,
-          title: map['title'] as String,
-          body: map['body'] as String,
-        );
-      }).toList();
+      final body = json.decode(response.body) as Map<String, dynamic>;
+      final countriesList = body['countries'] as List;
+      countriesList.forEach((countryName) {
+        countries.add(Country.fromMap(countryName));
+      });
+      countries.sort(( a,  b) => a.name.compareTo(b.name));
+      return countries;
     }
     throw Exception('error fetching posts');
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_infinite_list/posts/posts.dart';
+import 'package:searchable_listview/searchable_listview.dart';
+
 
 class PostsList extends StatefulWidget {
   const PostsList({super.key});
@@ -31,13 +33,10 @@ class _PostsListState extends State<PostsList> {
             }
             return ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return index >= state.posts.length
-                    ? const BottomLoader()
-                    : PostListItem(post: state.posts[index]);
+                return PostListItem(post: state.posts[index]);
               },
-              itemCount: state.hasReachedMax
-                  ? state.posts.length
-                  : state.posts.length + 1,
+              itemCount: state.posts.length,
+                  
               controller: _scrollController,
             );
           case PostStatus.initial:

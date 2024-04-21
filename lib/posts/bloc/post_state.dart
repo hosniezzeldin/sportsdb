@@ -5,17 +5,17 @@ enum PostStatus { initial, success, failure }
 final class PostState extends Equatable {
   const PostState({
     this.status = PostStatus.initial,
-    this.posts = const <Post>[],
+    this.posts = const <Country>[],
     this.hasReachedMax = false,
   });
 
   final PostStatus status;
-  final List<Post> posts;
+  final List<Country> posts;
   final bool hasReachedMax;
 
   PostState copyWith({
     PostStatus? status,
-    List<Post>? posts,
+    List<Country>? posts,
     bool? hasReachedMax,
   }) {
     return PostState(

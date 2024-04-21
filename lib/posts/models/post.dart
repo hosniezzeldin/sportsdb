@@ -1,12 +1,15 @@
 import 'package:equatable/equatable.dart';
 
-final class Post extends Equatable {
-  const Post({required this.id, required this.title, required this.body});
+final class Country extends Equatable {
+  const Country({ required this.name});
 
-  final int id;
-  final String title;
-  final String body;
+  final String name;
 
   @override
-  List<Object> get props => [id, title, body];
+  List<Object> get props => [name];
+
+  factory Country.fromMap(Map<String,dynamic> map) {
+
+    return Country(name: map['name_en'] as String);
+  }
 }
