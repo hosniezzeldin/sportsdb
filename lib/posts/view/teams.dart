@@ -32,7 +32,7 @@ class _TeamsState extends State<Teams> {
             return const Center(child: Text('failed to fetch countries'));
           case TeamStatus.success:
             if (state.teams.isEmpty) {
-              return const Center(child: Text('no countries to show'));
+              return const Center(child: Text('no Teams to show'));
             }
             return Scaffold(
               body: Container(

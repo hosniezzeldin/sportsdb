@@ -36,11 +36,11 @@ class SeasonBloc extends Bloc<SeasonEvent, SeasonState> {
     if (state.hasReachedMax) return;
     try {
       if (state.status == SeasonStatus.initial) {
-        final posts = await _fetchPosts(league_id);
+        final seasons = await _fetchPosts(league_id);
         return emit(
           state.copyWith(
             status: SeasonStatus.success,
-            seasons: posts,
+            seasons: seasons,
             hasReachedMax: false,
           ),
         );

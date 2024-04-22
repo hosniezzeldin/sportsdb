@@ -36,11 +36,11 @@ class TeamBloc extends Bloc<SeasonEvent, TeamState> {
     if (state.hasReachedMax) return;
     try {
       if (state.status == TeamStatus.initial) {
-        final posts = await _fetchPosts(country_name);
+        final teams = await _fetchPosts(country_name);
         return emit(
           state.copyWith(
             status: TeamStatus.success,
-            teams: posts,
+            teams: teams,
             hasReachedMax: false,
           ),
         );

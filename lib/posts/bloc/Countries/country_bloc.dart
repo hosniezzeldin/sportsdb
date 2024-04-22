@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_infinite_list/posts/posts.dart';
+import 'package:flutter_infinite_list/posts/soccer.dart';
 import 'package:http/http.dart' as http;
 import 'package:stream_transform/stream_transform.dart';
 
@@ -36,11 +36,11 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
     if (state.hasReachedMax) return;
     try {
       if (state.status == PostStatus.initial) {
-        final posts = await _fetchPosts();
+        final countries = await _fetchPosts();
         return emit(
           state.copyWith(
             status: PostStatus.success,
-            posts: posts,
+            countries: countries,
             hasReachedMax: false,
           ),
         );
@@ -51,7 +51,7 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
           : emit(
               state.copyWith(
                 status: PostStatus.success,
-                posts: List.of(state.posts)..addAll(posts),
+                countries: List.of(state.countries)..addAll(posts),
                 hasReachedMax: false,
               ),
             );

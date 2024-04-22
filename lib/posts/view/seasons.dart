@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_infinite_list/posts/posts.dart';
+import 'package:flutter_infinite_list/posts/soccer.dart';
 import 'package:flutter_infinite_list/posts/view/teams.dart';
 import 'package:flutter_infinite_list/posts/widgets/season_list_item.dart';
 import 'package:http/http.dart' as http;
@@ -36,7 +36,7 @@ class _SeasonsState extends State<Seasons> {
             return const Center(child: Text('failed to fetch countries'));
           case SeasonStatus.success:
             if (state.seasons.isEmpty) {
-              return const Center(child: Text('no countries to show'));
+              return const Center(child: Text('no Seasons to show'));
             }
             return Scaffold(
               body: Container(
@@ -80,7 +80,7 @@ class _SeasonsState extends State<Seasons> {
               child: Teams(),
             );
           })),
-          child: SeasonListItem(post: season),
+          child: SeasonListItem(season: season),
         );
       },
       filter: (value) => state.seasons

@@ -36,11 +36,11 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     if (state.hasReachedMax) return;
     try {
       if (state.status == LeagueStatus.initial) {
-        final posts = await _fetchPosts(country_name);
+        final leagues = await _fetchPosts(country_name);
         return emit(
           state.copyWith(
             status: LeagueStatus.success,
-            leagues: posts,
+            leagues: leagues,
             hasReachedMax: false,
           ),
         );

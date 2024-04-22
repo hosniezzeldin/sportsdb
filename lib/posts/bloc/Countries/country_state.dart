@@ -5,31 +5,31 @@ enum PostStatus { initial, success, failure }
 final class CountryState extends Equatable {
   const CountryState({
     this.status = PostStatus.initial,
-    this.posts = const <Country>[],
+    this.countries = const <Country>[],
     this.hasReachedMax = false,
   });
 
   final PostStatus status;
-  final List<Country> posts;
+  final List<Country> countries;
   final bool hasReachedMax;
 
   CountryState copyWith({
     PostStatus? status,
-    List<Country>? posts,
+    List<Country>? countries,
     bool? hasReachedMax,
   }) {
     return CountryState(
       status: status ?? this.status,
-      posts: posts ?? this.posts,
+      countries: countries ?? this.countries,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
     );
   }
 
   @override
   String toString() {
-    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, posts: ${posts.length} }''';
+    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, posts: ${countries.length} }''';
   }
 
   @override
-  List<Object> get props => [status, posts, hasReachedMax];
+  List<Object> get props => [status, countries, hasReachedMax];
 }

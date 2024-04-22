@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_infinite_list/posts/bloc/Leagues/leagues_bloc.dart';
 import 'package:flutter_infinite_list/posts/bloc/Seasons/seasons_bloc.dart';
-import 'package:flutter_infinite_list/posts/posts.dart';
+import 'package:flutter_infinite_list/posts/soccer.dart';
 import 'package:flutter_infinite_list/posts/widgets/league_list_item.dart';
 import 'package:http/http.dart' as http;
 import 'package:searchable_listview/searchable_listview.dart';
@@ -35,7 +35,7 @@ class _LeaguesState extends State<Leagues> {
             return const Center(child: Text('failed to fetch countries'));
           case LeagueStatus.success:
             if (state.leagues.isEmpty) {
-              return const Center(child: Text('no countries to show'));
+              return const Center(child: Text('no Leagues to show'));
             }
             return Scaffold(
               body: Container(
@@ -85,7 +85,7 @@ class _LeaguesState extends State<Leagues> {
       },
       filter: (value) => state.leagues
           .where(
-            (element) => element.name!.toLowerCase().contains(value),
+            (element) => element.name.toLowerCase().contains(value),
           )
           .toList(),
       emptyWidget: Container(),

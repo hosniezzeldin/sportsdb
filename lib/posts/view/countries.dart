@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_infinite_list/posts/bloc/Leagues/leagues_bloc.dart';
-import 'package:flutter_infinite_list/posts/posts.dart';
+import 'package:flutter_infinite_list/posts/soccer.dart';
 import 'package:http/http.dart' as http;
 import 'package:searchable_listview/searchable_listview.dart';
 
+import '../widgets/country_list_item.dart';
 import 'leagues.dart';
 
-class PostsList extends StatefulWidget {
-  const PostsList({super.key});
+class CountriesList extends StatefulWidget {
+  const CountriesList({super.key});
 
   @override
-  State<PostsList> createState() => _PostsListState();
+  State<CountriesList> createState() => _CountriesListState();
 }
 
-class _PostsListState extends State<PostsList> {
+class _CountriesListState extends State<CountriesList> {
   final _scrollController = ScrollController();
 
   @override
@@ -31,7 +32,7 @@ class _PostsListState extends State<PostsList> {
           case PostStatus.failure:
             return const Center(child: Text('failed to fetch countries'));
           case PostStatus.success:
-            if (state.posts.isEmpty) {
+            if (state.countries.isEmpty) {
               return const Center(child: Text('no countries to show'));
             }
             return Container(
@@ -60,7 +61,7 @@ class _PostsListState extends State<PostsList> {
 
   renderSimpleSearchableList(CountryState state) {
     return SearchableList<Country>(
-      initialList: state.posts,
+      initialList: state.countries,
       builder: (list, index, item) {
         final Country country = item;
 
@@ -74,10 +75,10 @@ class _PostsListState extends State<PostsList> {
               child: Leagues(country_name: country.name!),
             );
           })),
-          child: PostListItem(post: country),
+          child: PostListItem(country: country),
         );
       },
-      filter: (value) => state.posts
+      filter: (value) => state.countries
           .where(
             (element) => element.name!.toLowerCase().contains(value),
           )
