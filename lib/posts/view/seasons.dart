@@ -90,7 +90,7 @@ class _SeasonsState extends State<Seasons> {
           .toList(),
       emptyWidget: Container(),
       inputDecoration: InputDecoration(
-        labelText: "Search Country",
+        labelText: "Search Seasons",
         fillColor: Colors.white,
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(

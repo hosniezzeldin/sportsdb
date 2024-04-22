@@ -66,7 +66,7 @@ class _TeamsState extends State<Teams> {
       builder: (list, index, item) {
         final Team country = item;
 
-        return TeamListItem(post: country);
+        return TeamListItem(team: country);
       },
       filter: (value) => state.teams
           .where(
@@ -75,7 +75,7 @@ class _TeamsState extends State<Teams> {
           .toList(),
       emptyWidget: Container(),
       inputDecoration: InputDecoration(
-        labelText: "Search Country",
+        labelText: "Search Teams",
         fillColor: Colors.white,
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(

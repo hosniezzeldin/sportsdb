@@ -80,7 +80,7 @@ class _LeaguesState extends State<Leagues> {
               child: Seasons(country_name: widget.country_name),
             );
           })),
-          child: LeagueListItem(post: league),
+          child: LeagueListItem(league: league),
         );
       },
       filter: (value) => state.leagues
@@ -90,7 +90,7 @@ class _LeaguesState extends State<Leagues> {
           .toList(),
       emptyWidget: Container(),
       inputDecoration: InputDecoration(
-        labelText: "Search Country",
+        labelText: "Search Leagues",
         fillColor: Colors.white,
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(

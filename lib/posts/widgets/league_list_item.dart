@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import '../models/league.dart';
 
 class LeagueListItem extends StatelessWidget {
-  const LeagueListItem({required this.post, super.key});
+  const LeagueListItem({required this.league, super.key});
 
-  final League post;
+  final League league;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Material(
       child: ListTile(
-        title: Text(post.name),
+        leading: Image.network(league.badge ?? ''),
+        title: Text(league.name),
         dense: true,
       ),
     );

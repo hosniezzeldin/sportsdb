@@ -1,2 +1,2 @@
-export 'posts_list.dart';
-export 'posts_page.dart';
+export 'countries.dart';
+export 'main_page.dart';

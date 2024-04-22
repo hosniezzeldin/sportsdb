@@ -84,7 +84,7 @@ class _PostsListState extends State<PostsList> {
           .toList(),
       emptyWidget: Container(),
       inputDecoration: InputDecoration(
-        labelText: "Search Country",
+        labelText: "Search Countries",
         fillColor: Colors.white,
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(
