@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_infinite_list/posts/soccer.dart';
-import 'package:flutter_infinite_list/posts/view/teams.dart';
-import 'package:flutter_infinite_list/posts/widgets/season_list_item.dart';
-import 'package:http/http.dart' as http;
 import 'package:searchable_listview/searchable_listview.dart';
+import 'package:soccer/soccer/bloc/Teams/team_bloc.dart';
 
-import '../bloc/Seasons/seasons_bloc.dart';
-import '../bloc/Teams/team_bloc.dart';
-import '../models/Season.dart';
+import '../bloc/Countries/country_bloc.dart';
+import '../models/Team.dart';
+import '../widgets/team_list_item.dart';
 
-class Seasons extends StatefulWidget {
-  const Seasons({super.key, required this.country_name});
+class Teams extends StatefulWidget {
+  const Teams({super.key});
 
-  final String country_name;
   @override
-  State<Seasons> createState() => _SeasonsState();
+  State<Teams> createState() => _TeamsState();
 }
 
-class _SeasonsState extends State<Seasons> {
+class _TeamsState extends State<Teams> {
   final _scrollController = ScrollController();
 
   @override
@@ -29,14 +25,14 @@ class _SeasonsState extends State<Seasons> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SeasonBloc, SeasonState>(
+    return BlocBuilder<TeamBloc, TeamState>(
       builder: (context, state) {
         switch (state.status) {
-          case SeasonStatus.failure:
+          case TeamStatus.failure:
             return const Center(child: Text('failed to fetch countries'));
-          case SeasonStatus.success:
-            if (state.seasons.isEmpty) {
-              return const Center(child: Text('no Seasons to show'));
+          case TeamStatus.success:
+            if (state.teams.isEmpty) {
+              return const Center(child: Text('no Teams to show'));
             }
             return Scaffold(
               body: Container(
@@ -57,40 +53,29 @@ class _SeasonsState extends State<Seasons> {
               ),
             );
 
-          case SeasonStatus.initial:
+          case TeamStatus.initial:
             return const Center(child: CircularProgressIndicator());
         }
       },
     );
   }
 
-  renderSimpleSearchableList(SeasonState state) {
-    return SearchableList<Season>(
-      initialList: state.seasons,
+  renderSimpleSearchableList(TeamState state) {
+    return SearchableList<Team>(
+      initialList: state.teams,
       builder: (list, index, item) {
-        final Season season = item;
-        return GestureDetector(
-          onTap: () =>
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return BlocProvider<TeamBloc>(
-              create: (context) => TeamBloc(
-                country_name: widget.country_name,
-                httpClient: http.Client(),
-              )..add(TeamsFetched()),
-              child: Teams(),
-            );
-          })),
-          child: SeasonListItem(season: season),
-        );
+        final Team country = item;
+
+        return TeamListItem(team: country);
       },
-      filter: (value) => state.seasons
+      filter: (value) => state.teams
           .where(
             (element) => element.name.toLowerCase().contains(value),
           )
           .toList(),
       emptyWidget: Container(),
       inputDecoration: InputDecoration(
-        labelText: "Search Seasons",
+        labelText: "Search Teams",
         fillColor: Colors.white,
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(

@@ -76,6 +76,6 @@ class SeasonBloc extends Bloc<SeasonEvent, SeasonState> {
       return seasons;
     }
 
-    throw Exception('error fetching posts');
+    throw Exception('error fetching soccer');
   }
 }

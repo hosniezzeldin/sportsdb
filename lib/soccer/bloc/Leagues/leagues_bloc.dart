@@ -80,7 +80,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         print(e.toString());
       }
     } else {
-      throw Exception('error fetching posts');
+      throw Exception('error fetching soccer');
     }
   }
 }

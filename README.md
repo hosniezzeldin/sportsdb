@@ -1,6 +1,6 @@
 [![build](https://github.com/felangel/bloc/workflows/build/badge.svg)](https://github.com/felangel/bloc/actions)
 
-# flutter_infinite_list
+# soccer
 
 A new Flutter project.
 

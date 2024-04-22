@@ -27,7 +27,7 @@ final class SeasonState extends Equatable {
 
   @override
   String toString() {
-    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, posts: ${seasons.length} }''';
+    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, soccer: ${seasons.length} }''';
   }
 
   @override

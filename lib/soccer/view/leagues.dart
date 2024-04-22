@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_infinite_list/posts/bloc/Leagues/leagues_bloc.dart';
-import 'package:flutter_infinite_list/posts/bloc/Seasons/seasons_bloc.dart';
-import 'package:flutter_infinite_list/posts/soccer.dart';
-import 'package:flutter_infinite_list/posts/widgets/league_list_item.dart';
 import 'package:http/http.dart' as http;
 import 'package:searchable_listview/searchable_listview.dart';
+import 'package:soccer/soccer/bloc/Leagues/leagues_bloc.dart';
+import 'package:soccer/soccer/bloc/Seasons/seasons_bloc.dart';
+import 'package:soccer/soccer/soccer.dart';
 
 import '../models/league.dart';
+import '../widgets/league_list_item.dart';
 import 'seasons.dart';
 
 class Leagues extends StatefulWidget {

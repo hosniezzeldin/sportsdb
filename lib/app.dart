@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/view/main_page.dart';
+import 'package:soccer/soccer/view/main_page.dart';
 
 class App extends MaterialApp {
   const App({super.key})

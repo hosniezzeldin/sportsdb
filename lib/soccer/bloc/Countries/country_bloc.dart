@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_infinite_list/posts/soccer.dart';
 import 'package:http/http.dart' as http;
+import 'package:soccer/soccer/models/country.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 part 'country_event.dart';

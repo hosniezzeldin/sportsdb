@@ -77,6 +77,6 @@ class TeamBloc extends Bloc<SeasonEvent, TeamState> {
       return teams;
     }
 
-    throw Exception('error fetching posts');
+    throw Exception('error fetching soccer');
   }
 }

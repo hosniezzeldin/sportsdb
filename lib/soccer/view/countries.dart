@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_infinite_list/posts/bloc/Leagues/leagues_bloc.dart';
-import 'package:flutter_infinite_list/posts/soccer.dart';
 import 'package:http/http.dart' as http;
 import 'package:searchable_listview/searchable_listview.dart';
+import 'package:soccer/soccer/bloc/Countries/country_bloc.dart';
+import 'package:soccer/soccer/bloc/Leagues/leagues_bloc.dart';
 
+import '../models/country.dart';
 import '../widgets/country_list_item.dart';
 import 'leagues.dart';
 

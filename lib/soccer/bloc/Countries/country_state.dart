@@ -27,7 +27,7 @@ final class CountryState extends Equatable {
 
   @override
   String toString() {
-    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, posts: ${countries.length} }''';
+    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, soccer: ${countries.length} }''';
   }
 
   @override

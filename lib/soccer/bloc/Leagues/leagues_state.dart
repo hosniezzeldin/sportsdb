@@ -27,7 +27,7 @@ final class LeagueState extends Equatable {
 
   @override
   String toString() {
-    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, posts: ${leagues.length} }''';
+    return '''PostState { status: $status, hasReachedMax: $hasReachedMax, soccer: ${leagues.length} }''';
   }
 
   @override
