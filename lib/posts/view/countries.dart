@@ -69,9 +69,9 @@ class _PostsListState extends State<PostsList> {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return BlocProvider<LeagueBloc>(
               create: (context) => LeagueBloc(
-                  httpClient: http.Client(), country_name: country.name)
+                  httpClient: http.Client(), country_name: country.name!)
                 ..add(LeagueFetched()),
-              child: Leagues(country_name: country.name),
+              child: Leagues(country_name: country.name!),
             );
           })),
           child: PostListItem(post: country),
@@ -79,7 +79,7 @@ class _PostsListState extends State<PostsList> {
       },
       filter: (value) => state.posts
           .where(
-            (element) => element.name.toLowerCase().contains(value),
+            (element) => element.name!.toLowerCase().contains(value),
           )
           .toList(),
       emptyWidget: Container(),

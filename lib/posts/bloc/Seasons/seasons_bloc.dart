@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -72,16 +71,7 @@ class SeasonBloc extends Bloc<SeasonEvent, SeasonState> {
       ),
     );
     if (response.statusCode == 200) {
-      final body = json.decode(response.body) as Map<String, dynamic>;
-      List<dynamic> seasonList = body['seasons'];
-
-      for (var season in seasonList) {
-        seasons.add(Season.fromMap(season));
-      }
-      ;
-      // leagueList.forEach((element) {
-      //   leagues.add(Season.fromMap(element));
-      // });
+      seasons = seasonsFromJson(response.body).seasons;
       seasons.sort((a, b) => a.name.compareTo(b.name));
       return seasons;
     }

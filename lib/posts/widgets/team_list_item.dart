@@ -12,7 +12,7 @@ class TeamListItem extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Material(
       child: ListTile(
-        leading: Image.network(team.badge ?? ''),
+        leading: Image.network(team.strTeamBadge ?? ''),
         title: Text(
           team.name,
           style: TextStyle(

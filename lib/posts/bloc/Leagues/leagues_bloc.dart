@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -47,7 +46,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
         );
       }
       final posts = await _fetchPosts(country_name);
-      posts.isEmpty
+      posts!.isEmpty
           ? emit(state.copyWith(hasReachedMax: true))
           : emit(
               state.copyWith(
@@ -61,7 +60,7 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
     }
   }
 
-  Future<List<League>> _fetchPosts(String country_name) async {
+  Future<List<League>?> _fetchPosts(String country_name) async {
     List<League> leagues = [];
 
     final response = await httpClient.get(
@@ -72,16 +71,16 @@ class LeagueBloc extends Bloc<LeagueEvent, LeagueState> {
       ),
     );
     if (response.statusCode == 200) {
-      final body = json.decode(response.body) as Map<String, dynamic>;
-      List<dynamic> leagueList = body['countries'];
+      try {
+        List<League>? leagues = leaguesFromJson(response.body).countries;
+        leagues.sort((a, b) => a.name.compareTo(b.name));
 
-      leagueList.forEach((element) {
-        leagues.add(League.fromMap(element));
-      });
-      leagues.sort((a, b) => a.name.compareTo(b.name));
-      return leagues;
+        return leagues;
+      } catch (e) {
+        print(e.toString());
+      }
+    } else {
+      throw Exception('error fetching posts');
     }
-
-    throw Exception('error fetching posts');
   }
 }

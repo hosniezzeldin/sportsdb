@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -72,13 +71,7 @@ class TeamBloc extends Bloc<SeasonEvent, TeamState> {
       ),
     );
     if (response.statusCode == 200) {
-      final body = json.decode(response.body) as Map<String, dynamic>;
-      List<dynamic> teamList = body['teams'];
-
-      for (var team in teamList) {
-        teams.add(Team.fromMap(team));
-      }
-      ;
+      teams = teamsFromJson(response.body).teams;
 
       teams.sort((a, b) => a.name.compareTo(b.name));
       return teams;

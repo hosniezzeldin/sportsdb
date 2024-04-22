@@ -75,7 +75,7 @@ class _LeaguesState extends State<Leagues> {
             return BlocProvider<SeasonBloc>(
               create: (context) => SeasonBloc(
                 httpClient: http.Client(),
-                league_id: league.id,
+                league_id: league.idLeague,
               )..add(SeasonFetched()),
               child: Seasons(country_name: widget.country_name),
             );
@@ -85,7 +85,7 @@ class _LeaguesState extends State<Leagues> {
       },
       filter: (value) => state.leagues
           .where(
-            (element) => element.name.toLowerCase().contains(value),
+            (element) => element.name!.toLowerCase().contains(value),
           )
           .toList(),
       emptyWidget: Container(),

@@ -12,9 +12,18 @@ class LeagueListItem extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Material(
       child: ListTile(
-        leading: Image.network(league.badge ?? ''),
-        title: Text(league.name),
+        leading: Image.network(league.strBadge ?? ''),
+        title: Text(
+          league.name,
+          style: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+            fontSize: 16.0,
+          ),
+        ),
+        subtitle: Text(league.strDescriptionEn ?? ''),
         dense: true,
+        isThreeLine: true,
       ),
     );
   }

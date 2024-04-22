@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -62,8 +61,6 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
   }
 
   Future<List<Country>> _fetchPosts() async {
-    List<Country> countries = [];
-
     final response = await httpClient.get(
       Uri.http(
         'www.thesportsdb.com',
@@ -71,14 +68,12 @@ class CountryBloc extends Bloc<CountryEvent, CountryState> {
       ),
     );
     if (response.statusCode == 200) {
-      final body = json.decode(response.body) as Map<String, dynamic>;
-      final countriesList = body['countries'] as List;
-      countriesList.forEach((countryName) {
-        countries.add(Country.fromMap(countryName));
-      });
+      List<Country> countries = countryFromJson(response.body).countries!;
       countries.sort((a, b) => a.name.compareTo(b.name));
+
       return countries;
+    } else {
+      return [];
     }
-    throw Exception('error fetching posts');
   }
 }

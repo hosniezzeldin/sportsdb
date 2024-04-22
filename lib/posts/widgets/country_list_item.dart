@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_infinite_list/posts/posts.dart';
+
+import '../models/country.dart';
 
 class PostListItem extends StatelessWidget {
   const PostListItem({required this.post, super.key});
@@ -11,7 +12,7 @@ class PostListItem extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Material(
       child: ListTile(
-        title: Text(post.name),
+        title: Text(post.name!),
         dense: true,
       ),
     );

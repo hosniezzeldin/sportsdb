@@ -1,15 +1,42 @@
-import 'package:equatable/equatable.dart';
+// To parse this JSON data, do
+//
+//     final country = countryFromJson(jsonString);
 
-final class Country extends Equatable {
-  const Country( { required this.name});
+import 'dart:convert';
 
-  final String name;
+Countries countryFromJson(String str) => Countries.fromJson(json.decode(str));
 
-  @override
-  List<Object> get props => [name];
+String countryToJson(Countries data) => json.encode(data.toJson());
 
-  factory Country.fromMap(Map<String,dynamic> map) {
+class Countries {
+  List<Country>? countries;
 
-    return Country(name: map['name_en'] as String);
-  }
+  Countries({
+    this.countries,
+  });
+
+  factory Countries.fromJson(Map<String, dynamic> json) => Countries(
+        countries: List<Country>.from(
+            json["countries"].map((x) => Country.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "countries": List<dynamic>.from(countries!.map((x) => x.toJson())),
+      };
+}
+
+class Country {
+  String name;
+
+  Country({
+    required this.name,
+  });
+
+  factory Country.fromJson(Map<String, dynamic> json) => Country(
+        name: json["name_en"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name_en": name,
+      };
 }
