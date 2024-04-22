@@ -13,8 +13,18 @@ class TeamListItem extends StatelessWidget {
     return Material(
       child: ListTile(
         leading: Image.network(team.badge ?? ''),
-        title: Text(team.name),
+        title: Text(
+          team.name,
+          style: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+            fontSize: 16.0,
+          ),
+        ),
+        subtitle: Text(team.desc ?? ''),
+        isThreeLine: true,
         dense: true,
+        style: ListTileStyle.list,
       ),
     );
   }
