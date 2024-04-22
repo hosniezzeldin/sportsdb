@@ -39,7 +39,7 @@ class _LeaguesState extends State<Leagues> {
             }
             return Scaffold(
               body: Container(
-                margin: EdgeInsets.only(top: 15.0),
+                margin: EdgeInsets.only(top: 35.0),
                 child: SizedBox(
                   width: double.infinity,
                   child: Column(

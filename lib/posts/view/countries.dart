@@ -35,7 +35,7 @@ class _PostsListState extends State<PostsList> {
               return const Center(child: Text('no countries to show'));
             }
             return Container(
-              margin: EdgeInsets.only(top: 15.0),
+              margin: EdgeInsets.only(top: 35.0),
               child: SizedBox(
                 width: double.infinity,
                 child: Column(
